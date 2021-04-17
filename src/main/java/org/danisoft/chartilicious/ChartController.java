@@ -20,6 +20,10 @@ import java.io.IOException;
 // https://twitter.com/dawntraoz/status/1380521399723438088
 // https://www.codewall.co.uk/best-javascript-chart-libraries/
 // https://www.jfree.org/jfreechart/samples.html
+// https://www.jfree.org/forum/viewtopic.php?t=26013
+// https://stackoverflow.com/questions/28494575/how-to-make-jfree-chart-to-take-non-empty-series-data-set-to-plot-range-axis
+// check "TimeSeriesCollection"
+// check "createTimeSeriesChart"
 @RestController
 public class ChartController {
 
