@@ -26,6 +26,7 @@ import java.io.IOException;
 // check "createTimeSeriesChart"
 // https://www.hebergementwebs.com/tutoriel-jfreechart/jfreechart-guide-rapide
 // no excel-like tables-below-chart, sadly https://www.jfree.org/forum/viewtopic.php?t=14389
+// How to combine line chart and bar chart in JFreeChart https://www.boraji.com/how-to-combine-line-chart-and-bar-chart-in-jfreechart
 @RestController
 public class ChartController {
 
