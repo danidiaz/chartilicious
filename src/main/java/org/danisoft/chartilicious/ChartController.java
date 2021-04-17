@@ -24,7 +24,8 @@ import java.io.IOException;
 // https://stackoverflow.com/questions/28494575/how-to-make-jfree-chart-to-take-non-empty-series-data-set-to-plot-range-axis
 // check "TimeSeriesCollection"
 // check "createTimeSeriesChart"
-//https://www.hebergementwebs.com/tutoriel-jfreechart/jfreechart-guide-rapide
+// https://www.hebergementwebs.com/tutoriel-jfreechart/jfreechart-guide-rapide
+// no excel-like tables-below-chart, sadly https://www.jfree.org/forum/viewtopic.php?t=14389
 @RestController
 public class ChartController {
 
