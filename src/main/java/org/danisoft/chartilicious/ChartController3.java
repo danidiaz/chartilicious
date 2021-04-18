@@ -1,0 +1,132 @@
+package org.danisoft.chartilicious;
+
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.*;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+// https://zetcode.com/java/jfreechart/
+// https://stackoverflow.com/questions/40105094/jfreechart-horizontal-stacked-bar-chart-with-date-axis
+// https://www.jfree.org/jfreechart/api/javadoc/org/jfree/data/category/CategoryDataset.html
+// https://www.jfree.org/jfreechart/api/javadoc/org/jfree/data/jdbc/JDBCCategoryDataset.html
+// https://twitter.com/GeoffreyDeSmet/status/1373614799125426183
+// https://twitter.com/dawntraoz/status/1380521399723438088
+// https://www.codewall.co.uk/best-javascript-chart-libraries/
+// https://www.jfree.org/jfreechart/samples.html
+// https://www.jfree.org/forum/viewtopic.php?t=26013
+// https://stackoverflow.com/questions/28494575/how-to-make-jfree-chart-to-take-non-empty-series-data-set-to-plot-range-axis
+// check "TimeSeriesCollection"
+// check "createTimeSeriesChart"
+// https://www.hebergementwebs.com/tutoriel-jfreechart/jfreechart-guide-rapide
+// no excel-like tables-below-chart, sadly https://www.jfree.org/forum/viewtopic.php?t=14389
+// How to combine line chart and bar chart in JFreeChart https://www.boraji.com/how-to-combine-line-chart-and-bar-chart-in-jfreechart
+@RestController
+public class ChartController3 {
+
+    @GetMapping(
+            value = "/chart3",
+            produces = MediaType.IMAGE_PNG_VALUE
+    )
+    public byte [] chart() throws IOException {
+
+        // Create Category plot
+        CategoryPlot plot = new CategoryPlot();
+
+        // Add the first dataset and render as bar
+        CategoryItemRenderer lineRenderer = new LineAndShapeRenderer();
+        plot.setDataset(0, createDataset());
+        plot.setRenderer(0, lineRenderer);
+
+        // Add the second dataset and render as lines
+        StackedBarRenderer baRenderer = new StackedBarRenderer();
+        // gradiente vertical
+        Paint p1 = new GradientPaint(
+                0.0f, 0.0f, new Color(0x02, 0x02, 0x0F), 0.0f, 0.0f, new Color(0x88, 0x88, 0xFF)
+        );
+//        Paint p1 = new Color(0x22, 0x22, 0xFF);
+        // Colors are Paints as well!!!
+        Paint p3 = new Color(0xFF, 0x88, 0x88);
+        baRenderer.setSeriesPaint(0,p1);
+        baRenderer.setSeriesPaint(1,p3);
+//        baRenderer.setSeriesFillPaint(0,p1);
+//        baRenderer.setSeriesFillPaint(1,p3);
+        // https://stackoverflow.com/questions/7076305/jfreechart-barchart-no-gradient
+        baRenderer.setBarPainter(new StandardBarPainter()); // to get a solid look
+        plot.setDataset(1, createCroppedDataset());
+        plot.setRenderer(1, baRenderer);
+
+        // Set Axis
+        plot.setDomainAxis(new CategoryAxis("Time"));
+        plot.setRangeAxis(new NumberAxis("Value"));
+
+        JFreeChart chart = new JFreeChart(plot);
+        chart.setTitle("Combined Bar And Line Chart | BORAJI.COM");
+
+        try (final ByteArrayOutputStream o = new ByteArrayOutputStream()) {
+            ChartUtils.writeChartAsPNG(o, chart, 1000, 1000);
+            return o.toByteArray();
+        }
+    }
+
+    private DefaultCategoryDataset createCroppedDataset() {
+
+        // First Series
+        String series1 = "Vistor";
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        dataset.addValue(200, series1, "2016-12-19");
+        dataset.addValue(150, series1, "2016-12-20");
+        dataset.addValue(100, series1, "2016-12-21");
+        dataset.addValue(210, series1, "2016-12-22");
+        dataset.addValue(null, series1, "2016-12-23");
+        dataset.addValue(null, series1, "2016-12-24");
+        dataset.addValue(null, series1, "2016-12-25");
+
+        // Second Series
+        String series2 = "Unique Visitor";
+        dataset.addValue(150, series2, "2016-12-19");
+        dataset.addValue(130, series2, "2016-12-20");
+        dataset.addValue(95, series2, "2016-12-21");
+        dataset.addValue(195, series2, "2016-12-22");
+        dataset.addValue(null, series2, "2016-12-23");
+        dataset.addValue(null, series2, "2016-12-24");
+        dataset.addValue(null, series2, "2016-12-25");
+
+        return dataset;
+    }
+
+    private DefaultCategoryDataset createDataset() {
+
+        // First Series
+        String series1 = "Vistor";
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        dataset.addValue(200, series1, "2016-12-19");
+        dataset.addValue(150, series1, "2016-12-20");
+        dataset.addValue(100, series1, "2016-12-21");
+        dataset.addValue(210, series1, "2016-12-22");
+        dataset.addValue(240, series1, "2016-12-23");
+        dataset.addValue(195, series1, "2016-12-24");
+        dataset.addValue(245, series1, "2016-12-25");
+
+        // Second Series
+        String series2 = "Unique Visitor";
+        dataset.addValue(150, series2, "2016-12-19");
+        dataset.addValue(130, series2, "2016-12-20");
+        dataset.addValue(95, series2, "2016-12-21");
+        dataset.addValue(195, series2, "2016-12-22");
+        dataset.addValue(200, series2, "2016-12-23");
+        dataset.addValue(180, series2, "2016-12-24");
+        dataset.addValue(230, series2, "2016-12-25");
+
+        return dataset;
+    }
+}
